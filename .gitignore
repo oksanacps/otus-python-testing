@@ -1,6 +1,7 @@
 # Custom
 .idea/
 reports/
+.flake8
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -19,3 +20,4 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
