@@ -3,13 +3,13 @@ from abc import ABC, abstractmethod
 
 class Figure(ABC):
 
-    def add_square(self, other_figure):
+    def add_area(self, other_figure):
         if isinstance(other_figure, Figure):
-            return self.get_square() + other_figure.get_square()
+            return self.get_area() + other_figure.get_area()
         raise ValueError
 
     @abstractmethod
-    def get_square(self):
+    def get_area(self):
         pass
 
     @abstractmethod
