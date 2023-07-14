@@ -1,5 +1,6 @@
-from src.figure import Figure
 from math import sqrt
+
+from src.figure import Figure
 
 
 class Triangle(Figure):
@@ -15,10 +16,10 @@ class Triangle(Figure):
 
     def get_area(self):
         semi_perimeter = (self.side_a + self.side_b + self.side_c) / 2
-        square = sqrt(semi_perimeter
-                      * (semi_perimeter - self.side_a)
-                      * (semi_perimeter - self.side_b)
-                      * (semi_perimeter - self.side_c))
+        square = sqrt(semi_perimeter *
+                      (semi_perimeter - self.side_a) *
+                      (semi_perimeter - self.side_b) *
+                      (semi_perimeter - self.side_c))
         return square
 
     def get_perimeter(self):
