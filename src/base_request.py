@@ -2,17 +2,19 @@ import requests
 
 
 class BaseRequest:
-    def __init__(self, base_url):
+    def __init__(self, base_url, headers=None):
         self.base_url = base_url
-        # headers and etc
+        self.headers = headers
 
-    def _request(self, url, request_type, data=None):
+    def _request(self, url, request_type, data=None, params=None):
         if request_type == 'GET':
-            response = requests.get(url)
+            response = requests.get(url, params=params)
         elif request_type == 'POST':
             response = requests.post(url, data=data)
-        elif request_type == 'FETCH':
-            response = requests.post(url, data=data)
+        elif request_type == 'DELETE':
+            response = requests.delete(url)
+        elif request_type == 'PUT':
+            response = requests.put(url, data=data)
         else:
             response = requests.delete(url)
 
@@ -27,23 +29,36 @@ class BaseRequest:
         print('*************')
         return response
 
-    def get(self, endpoint):
-        url = f'{self.base_url}/{endpoint}'
-        response = self._request(url, 'GET')
+    def get(self, endpoint=None, endpoint_id=None, params=None):
+        if endpoint is not None and endpoint_id is None:
+            url = f'{self.base_url}/{endpoint}'
+        elif endpoint is None and endpoint_id is None:
+            url = self.base_url
+        elif endpoint is not None and endpoint_id is not None:
+            url = f'{self.base_url}/{endpoint}/{endpoint_id}'
+        response = self._request(url=url, request_type='GET', params=params)
         return response.json()
 
-    def post(self, endpoint, body):
-        url = f'{self.base_url}/{endpoint}'
+    def post(self, endpoint, body, endpoint_id=None):
+        if endpoint_id is None:
+            url = f'{self.base_url}/{endpoint}'
+        else:
+            url = f'{self.base_url}/{endpoint}/{endpoint_id}'
         response = self._request(url, 'POST', data=body)
-        return response.json()['message']
+        return response.json()
 
-    def delete(self, endpoint):
-        url = f'{self.base_url}/{endpoint}'
+    def delete(self, endpoint, endpoint_id=None):
+        if endpoint_id is None:
+            url = f'{self.base_url}/{endpoint}'
+        else:
+            url = f'{self.base_url}/{endpoint}/{endpoint_id}'
         response = self._request(url, 'DELETE')
-        return response.json()['message']
+        return response.json()
 
-
-    def fetch(self, endpoint):
-        url = f'{self.base_url}/{endpoint}'
-        response = self._request(url, 'FETCH')
-        return response.json()['message']
+    def put(self, endpoint, body, endpoint_id=None):
+        if endpoint_id is None:
+            url = f'{self.base_url}/{endpoint}'
+        else:
+            url = f'{self.base_url}/{endpoint}/{endpoint_id}'
+        response = self._request(url, 'PUT', data=body)
+        return response.json()
