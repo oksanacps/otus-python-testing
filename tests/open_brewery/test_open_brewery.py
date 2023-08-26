@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from src.base_request import BaseRequest
@@ -20,7 +22,7 @@ class TestOpenBrewery:
         'proprietor',
         'closed'
     ])
-    def test_brewery_type(self, brewery_type):
+    def test_sort_brewery_by_type(self, brewery_type):
         base_request = BaseRequest(url_data.BASE_URL_OPEN_BREWERY)
         response = base_request.get(f'?by_type={brewery_type}&per_page=3')
         for brewery in response:
@@ -34,13 +36,25 @@ class TestOpenBrewery:
             assert search.lower() in brewery['name'].lower()
         # скорее всего если регистрозависимость, то нужно с одним именем найти и сравнить что нашлось одинковое
 
-    def test_open_brewery3(self):
-        pass
+    def test_get_list_brewery(self):
+        base_request = BaseRequest(url_data.BASE_URL_OPEN_BREWERY)
+        response = base_request.get('')
+        assert len(response) == 50
 
-    @pytest.mark.parametrize('example', [1, 2])
-    def test_open_brewery4(self, example):
-        pass
+    @pytest.mark.parametrize('city', ['San Diego', 'Los Angeles'])
+    def test_sort_brewery_by_city(self, city):
+        base_request = BaseRequest(url_data.BASE_URL_OPEN_BREWERY)
+        response = base_request.get(f'?by_city={city}&per_page=3')
+        for brewery in response:
+            assert city.lower() in brewery['city'].lower()
 
-    @pytest.mark.parametrize('example', [1, 2])
-    def test_open_brewery5(self, example):
-        pass
+
+    def test_sotr_brewery_by_dist(self, generate_random_coordinates):
+        base_request = BaseRequest(url_data.BASE_URL_OPEN_BREWERY)
+        lon, lan = generate_random_coordinates
+        response = base_request.get(f'?by_dist={lon},{lan}')
+        assert len(response) != 0
+
+        # добавить проверку что список отсортирован
+
+
