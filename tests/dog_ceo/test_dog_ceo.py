@@ -9,9 +9,9 @@ class TestDogCeo:
     def test_list_all_dogs(self, get_request_instance):
         request = get_request_instance
         response = request.get(endpoint='breeds/list/all')
-        
+
         assert response['status'] == 'success'
-        assert len(response['message']) == 98    # Правильно ли сравнивать с числом или лучше список иметь?
+        assert len(response['message']) == 98
 
     @pytest.mark.parametrize('breed, subbreed', [
         ('hound', 'afghan'),
@@ -50,4 +50,3 @@ class TestDogCeo:
         assert len(response['message']) == imgs_number
         for dog in response['message']:
             assert breed in dog
-
