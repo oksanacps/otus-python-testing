@@ -51,3 +51,4 @@ class TestOpenBrewery:
             lon2, lat2 = float(response[brewery]['longitude']), float(response[brewery]['latitude'])
             distance2 = helpers.haversine_distance(lon1, lat1, lon2, lat2)
             assert distance1 <= distance2
+            distance1 = distance2
